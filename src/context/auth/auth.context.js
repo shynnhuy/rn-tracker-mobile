@@ -1,16 +1,24 @@
 import { useContext } from "react";
 import { createDataContext } from "../createDataContext";
-import { authActions } from "./auth.actions";
+import {
+  signIn,
+  signUp,
+  clearAllError,
+  tryLocalSignIn,
+  signOut,
+} from "./auth.actions";
 import { authReducer } from "./auth.reducer";
 
 const initialState = {
   isSignedIn: false,
   isLoading: false,
+  token: null,
+  error: null,
 };
 
 export const { Context, Provider } = createDataContext(
   authReducer,
-  authActions,
+  { signIn, signUp, clearAllError, tryLocalSignIn, signOut },
   initialState
 );
 

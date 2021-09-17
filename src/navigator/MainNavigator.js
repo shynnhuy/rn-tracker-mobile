@@ -9,7 +9,11 @@ const Main = createBottomTabNavigator();
 export const MainNavigator = () => {
   return (
     <Main.Navigator>
-      <Main.Screen name="TrackFlow" component={TrackNavigator} />
+      <Main.Screen
+        name="Tracks"
+        component={TrackNavigator}
+        options={{ headerShown: false }}
+      />
       <Main.Screen name="TrackCreate" component={TrackCreateScreen} />
       <Main.Screen name="Account" component={AccountScreen} />
     </Main.Navigator>

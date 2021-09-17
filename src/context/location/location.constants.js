@@ -1,0 +1,1 @@
+export const ADD_CUR_LOCATION = "ADD_CUR_LOCATION";

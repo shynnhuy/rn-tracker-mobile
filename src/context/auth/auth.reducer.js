@@ -1,13 +1,47 @@
-import { SIGN_IN } from "./auth.constants";
+import { SIGN_IN, SIGN_UP, CLEAR_ERROR, SIGN_OUT } from "./auth.constants";
 
 export const authReducer = (state, { type, payload }) => {
   switch (type) {
     case SIGN_IN.PENDING:
       return { ...state, isLoading: true };
     case SIGN_IN.SUCCESS:
-      return { ...state, isLoading: false, isSignIn: true };
+      return {
+        ...state,
+        isLoading: false,
+        token: payload,
+        error: null,
+      };
     case SIGN_IN.ERROR:
-      return { ...state, isLoading: false, isSignIn: false };
+      return { ...state, isLoading: false, token: null, error: payload };
+
+    case SIGN_UP.PENDING:
+      return { ...state, isLoading: true };
+    case SIGN_UP.SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        token: payload,
+        error: null,
+      };
+    case SIGN_UP.ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        token: null,
+        error: payload,
+      };
+
+    case CLEAR_ERROR:
+      return {
+        ...state,
+        error: null,
+      };
+
+    case SIGN_OUT:
+      return {
+        ...state,
+        token: null,
+      };
     default:
       return state;
   }
