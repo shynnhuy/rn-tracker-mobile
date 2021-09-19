@@ -7,7 +7,7 @@ const Track = createNativeStackNavigator();
 
 export const TrackNavigator = () => {
   return (
-    <Track.Navigator>
+    <Track.Navigator screenOptions={{ title: "Tracks" }}>
       <Track.Screen name="TrackList" component={TrackListScreen} />
       <Track.Screen name="TrackDetail" component={TrackDetailScreen} />
     </Track.Navigator>

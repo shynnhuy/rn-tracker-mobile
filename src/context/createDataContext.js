@@ -7,7 +7,7 @@ export const createDataContext = (reducer, actions, initialState) => {
 
     const boundActions = {};
     for (let key in actions) {
-      boundActions[key] = actions[key](dispatch);
+      boundActions[key] = actions[key](dispatch, state);
     }
 
     return (

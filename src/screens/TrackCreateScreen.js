@@ -1,44 +1,38 @@
 import "../utils/_mockLocations";
-import React, { useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  requestForegroundPermissionsAsync,
-  watchPositionAsync,
-  Accuracy,
-} from "expo-location";
 import { Map } from "../components/Map";
 import { Text } from "react-native-elements";
 import { useLocationContext } from "../context/location/location.context";
+import useLocation from "../hooks/useLocation";
+import { useIsFocused } from "@react-navigation/core";
+import { TrackForm } from "../components/TrackForm";
 
 export const TrackCreateScreen = () => {
-  const [error, setError] = useState(null);
-  const { addLocation } = useLocationContext();
+  const {
+    state: { recording },
+    addLocation,
+  } = useLocationContext();
+  const isFocused = useIsFocused();
+  const callback = useCallback(
+    (location) => addLocation(location, recording),
+    [recording]
+  );
+  const [error] = useLocation(isFocused || recording, callback);
 
-  const startWatching = async () => {
-    try {
-      await requestForegroundPermissionsAsync();
-      await watchPositionAsync(
-        {
-          accuracy: Accuracy.BestForNavigation,
-          timeInterval: 1000,
-          distanceInterval: 10,
-        },
-        (location) => addLocation(location)
-      );
-    } catch (err) {
-      setError(err);
-    }
-  };
-
-  useEffect(() => {
-    startWatching();
-  }, []);
   return (
-    <>
+    <View style={styles.container}>
       <Map />
       {Boolean(error) && <Text>Please enable location permission.</Text>}
-    </>
+      <TrackForm />
+    </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    // alignItems: "center",
+  },
+});

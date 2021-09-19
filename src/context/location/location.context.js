@@ -1,9 +1,16 @@
 import { useContext } from "react";
 import { createDataContext } from "../createDataContext";
-import { addLocation } from "./location.actions";
 import { locationReducer } from "./location.reducer";
+import {
+  addLocation,
+  startRecording,
+  stopRecording,
+  changeName,
+  reset,
+} from "./location.actions";
 
 const initialState = {
+  name: "",
   recording: false,
   locations: [],
   currentLocation: null,
@@ -11,7 +18,7 @@ const initialState = {
 
 export const { Context, Provider } = createDataContext(
   locationReducer,
-  { addLocation },
+  { addLocation, startRecording, stopRecording, changeName, reset },
   initialState
 );
 

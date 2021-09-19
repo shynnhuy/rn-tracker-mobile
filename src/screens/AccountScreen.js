@@ -1,15 +1,15 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
+import { Spacer } from "../components/Spacer";
 import { useAuthContext } from "../context/auth/auth.context";
 
 export const AccountScreen = () => {
   const { signOut } = useAuthContext();
   return (
-    <View>
-      <Text>AccountScreen</Text>
+    <Spacer>
       <Button title="Sign Out" onPress={signOut} />
-    </View>
+    </Spacer>
   );
 };
 
