@@ -1,17 +1,21 @@
 import React from "react";
-import { ActivityIndicator, Dimensions, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import MapView, { Circle, Polyline } from "react-native-maps";
-import { useLocationContext } from "../context/location/location.context";
+import { useLocationContext } from "../context/location";
 
-export const Map = () => {
+export const Map = ({ error }) => {
   const {
     state: { currentLocation, locations },
   } = useLocationContext();
 
   const drawLine = locations.map((location) => location.coords);
 
-  if (!currentLocation) {
-    return <ActivityIndicator size="large" />;
+  if (!currentLocation || Boolean(error)) {
+    return (
+      <View style={[styles.map, { justifyContent: "center" }]}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
 
   return (

@@ -1,16 +1,18 @@
+import { useDispatch } from "react-redux";
 import { useLocationContext } from "../context/location";
-import { useTrackContext } from "../context/track";
+import { createTrack } from "../features/track";
 
 export default () => {
-  const { createTrack } = useTrackContext();
+  const dispatch = useDispatch();
+
   const {
     state: { name, locations },
     reset,
   } = useLocationContext();
 
-  const saveTrack = async () => {
+  const saveTrack = () => {
     if (name) {
-      await createTrack(name, locations);
+      dispatch(createTrack(name, locations));
       reset();
     }
   };

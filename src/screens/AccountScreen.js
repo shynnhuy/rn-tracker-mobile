@@ -1,14 +1,15 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
+import { useDispatch } from "react-redux";
 import { Spacer } from "../components/Spacer";
-import { useAuthContext } from "../context/auth/auth.context";
+import { signOut } from "../features/auth";
 
 export const AccountScreen = () => {
-  const { signOut } = useAuthContext();
+  const dispatch = useDispatch();
   return (
     <Spacer>
-      <Button title="Sign Out" onPress={signOut} />
+      <Button title="Sign Out" onPress={() => dispatch(signOut())} />
     </Spacer>
   );
 };

@@ -1,4 +1,4 @@
-import { api } from "../../api";
+import { api } from "../../app/api";
 import { navigate } from "../../utils/navigation";
 import { CREATE_TRACK, FETCH_TRACKS } from "./track.constants";
 

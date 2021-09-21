@@ -1,4 +1,4 @@
-import { api } from "../../api";
+import { api } from "../../app/api";
 import { getAccessToken, removeAccessToken, setAccessToken } from "../../utils";
 import { CLEAR_ERROR, SIGN_IN, SIGN_UP, SIGN_OUT } from "./auth.constants";
 

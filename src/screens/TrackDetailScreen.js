@@ -2,14 +2,14 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Text } from "react-native-elements";
 import MapView, { Polyline } from "react-native-maps";
+import { useSelector } from "react-redux";
 import { Spacer } from "../components/Spacer";
-import { useTrackContext } from "../context/track";
 
 export const TrackDetailScreen = ({ route: { params } }) => {
-  const { state } = useTrackContext();
+  const records = useSelector((state) => state.track.records);
   const { _id } = params;
 
-  const track = state.find((item) => item._id === _id);
+  const track = records.find((item) => item._id === _id);
   const inititalCoord = track.locations[0].coords;
 
   return (
@@ -22,9 +22,7 @@ export const TrackDetailScreen = ({ route: { params } }) => {
           longitudeDelta: 0.01,
         }}
       >
-        <Polyline
-          coordinates={track.locations.map((location) => location.coords)}
-        />
+        <Polyline coordinates={track.locations.map((location) => location.coords)} />
       </MapView>
       <Spacer>
         <Text h2>Track name: {track.name}</Text>

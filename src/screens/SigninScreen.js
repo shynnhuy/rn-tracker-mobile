@@ -1,15 +1,18 @@
 import React, { useCallback } from "react";
 import { StyleSheet, View, Button as RNButton } from "react-native";
-import { useAuthContext } from "../context/auth/auth.context";
+import { useDispatch, useSelector } from "react-redux";
 import { AuthForm } from "../components/AuthForm";
 import { useFocusEffect } from "@react-navigation/core";
+import { clearAllError, signIn } from "../features/auth";
 
 export const SigninScreen = ({ navigation: { navigate } }) => {
-  const { state, signIn, clearAllError } = useAuthContext();
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+
   useFocusEffect(
     useCallback(() => {
       return () => {
-        clearAllError();
+        dispatch(clearAllError());
       };
     }, [])
   );
@@ -17,15 +20,12 @@ export const SigninScreen = ({ navigation: { navigate } }) => {
   return (
     <View style={styles.container}>
       <AuthForm
-        error={state.error}
+        error={auth.error}
         header="Sign in"
-        submitAction={signIn}
+        submitAction={(data) => dispatch(signIn(data))}
         submitBtnText="Sign In"
       />
-      <RNButton
-        onPress={() => navigate("Signup")}
-        title="Don't have an account? Sign up now"
-      />
+      <RNButton onPress={() => navigate("Signup")} title="Don't have an account? Sign up now" />
     </View>
   );
 };

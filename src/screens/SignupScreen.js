@@ -1,16 +1,18 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { StyleSheet, View, Button as RNButton } from "react-native";
-import { useAuthContext } from "../context/auth/auth.context";
 import { AuthForm } from "../components/AuthForm";
 import { useFocusEffect } from "@react-navigation/core";
+import { clearAllError, signUp } from "../features/auth";
+import { useDispatch, useSelector } from "react-redux";
 
 export const SignupScreen = ({ navigation: { navigate } }) => {
-  const { state, signUp, clearAllError } = useAuthContext();
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
 
   useFocusEffect(
     useCallback(() => {
       return () => {
-        clearAllError();
+        dispatch(clearAllError());
       };
     }, [])
   );
@@ -18,9 +20,9 @@ export const SignupScreen = ({ navigation: { navigate } }) => {
   return (
     <View style={styles.container}>
       <AuthForm
-        error={state.error}
+        error={auth.error}
         header="Sign up for Tracker"
-        submitAction={signUp}
+        submitAction={(data) => dispatch(signUp(data))}
         submitBtnText={"Sign Up"}
       />
 

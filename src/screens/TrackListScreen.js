@@ -1,29 +1,25 @@
 import { useFocusEffect } from "@react-navigation/core";
 import React, { useCallback } from "react";
-import { TouchableOpacity } from "react-native";
+import { ActivityIndicator, TouchableOpacity } from "react-native";
 import { FlatList, StyleSheet, View } from "react-native";
 import { ListItem, Text } from "react-native-elements";
+import { useDispatch, useSelector } from "react-redux";
 import { Spacer } from "../components/Spacer";
-import { useTrackContext } from "../context/track";
+import { fetchTracks } from "../features/track";
 
 export const TrackListScreen = ({ navigation: { navigate } }) => {
-  const { state, fetchTracks } = useTrackContext();
+  const dispatch = useDispatch();
+  const track = useSelector((state) => state.track);
   useFocusEffect(
     useCallback(() => {
-      const getTracks = async () => {
-        await fetchTracks();
-      };
-      // console.log("FOCUS");
-      getTracks();
+      dispatch(fetchTracks());
 
       // return () => console.log("BLUR");
-    }, [])
+    }, [dispatch])
   );
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity
-      onPress={() => navigate("TrackDetail", { _id: item._id })}
-    >
+    <TouchableOpacity onPress={() => navigate("TrackDetail", { _id: item._id })}>
       <ListItem bottomDivider>
         <ListItem.Content>
           <ListItem.Title>{item.name}</ListItem.Title>
@@ -38,10 +34,19 @@ export const TrackListScreen = ({ navigation: { navigate } }) => {
       <Text>You don't have any track record. Create one</Text>
     </Spacer>
   );
+
+  if (track.loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: "#FFF" }}>
       <FlatList
-        data={state}
+        data={track.records}
         renderItem={renderItem}
         keyExtractor={(item) => item._id}
         ListEmptyComponent={<EmptyList />}
@@ -50,4 +55,9 @@ export const TrackListScreen = ({ navigation: { navigate } }) => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+  },
+});

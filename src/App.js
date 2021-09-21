@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
-import { useAuthContext } from "./context/auth/auth.context";
+import { useDispatch, useSelector } from "react-redux";
+import { tryLocalSignIn } from "./features/auth";
 import { AuthNavigator } from "./navigator/AuthNavigator";
 import { MainNavigator } from "./navigator/MainNavigator";
 
 export const App = () => {
-  const { state, tryLocalSignIn } = useAuthContext();
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
 
   useEffect(() => {
-    tryLocalSignIn();
-  }, []);
+    dispatch(tryLocalSignIn());
+  }, [dispatch]);
 
-  return Boolean(state.token) ? <MainNavigator /> : <AuthNavigator />;
+  return Boolean(auth.token) ? <MainNavigator /> : <AuthNavigator />;
 };

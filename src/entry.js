@@ -2,18 +2,22 @@ import React from "react";
 import { registerRootComponent } from "expo";
 import { NavigationContainer } from "@react-navigation/native";
 import { ThemeProvider } from "react-native-elements";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { StatusBar } from "expo-status-bar";
+import { ActivityIndicator } from "react-native";
 
-import { Provider as AuthProvider } from "./context/auth";
 import { Provider as LocationProvider } from "./context/location";
-import { Provider as TrackProvider } from "./context/track";
 import { App } from "./App";
 import { navigationRef } from "./utils";
-import { StatusBar } from "expo-status-bar";
+import { configureStore } from "./app/store";
+
+const { store, persistor } = configureStore();
 
 const Root = () => {
   return (
-    <TrackProvider>
-      <AuthProvider>
+    <Provider store={store}>
+      <PersistGate persistor={persistor} loading={<ActivityIndicator size="large" />}>
         <LocationProvider>
           <NavigationContainer ref={navigationRef}>
             <ThemeProvider>
@@ -22,8 +26,8 @@ const Root = () => {
             </ThemeProvider>
           </NavigationContainer>
         </LocationProvider>
-      </AuthProvider>
-    </TrackProvider>
+      </PersistGate>
+    </Provider>
   );
 };
 
